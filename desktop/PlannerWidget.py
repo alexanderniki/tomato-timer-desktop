@@ -1,9 +1,14 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
-from PyQt5.QtWidgets import QLabel, QPushButton
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QLabel, QPushButton, QComboBox, QSizePolicy
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QTimer
+from PyQt5 import QtWidgets
 
 from TimeoutMessageBox import TimeoutMessageBox
-
+from StatisticWindow import StatisticWindow
+from MainMenu import MainMenu
+from TrayIcon import  TrayIcon
 
 class PlannerWidget(QWidget):
     def __init__(self, app_settings):
@@ -11,8 +16,9 @@ class PlannerWidget(QWidget):
 
         self.settings = app_settings
         self.settings.PlannerWidget = self
-        if (self.settings.DEBUG == 1):
-            print(self.settings.PlannerWidget)
+        print(self.settings.PlannerWidget)
+
+        self.useComboTimes = False
 
         # Timer itself
         self.stopped = 1
@@ -22,6 +28,20 @@ class PlannerWidget(QWidget):
         self.current_seconds = 60
         self.seconds_timer = QTimer(self)
         self.seconds_timer.timeout.connect(self.reduceSeconds)
+
+        # Custom menu button
+        self.menu_button_t = QPushButton(self)
+        self.menu_button_t.setIcon(QIcon('res/ic_application.png'))
+        self.menu_button_t.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.menu_button_t.setFlat(True)
+        self.menu_button_t.setFocusPolicy(Qt.NoFocus)
+        self.menu_button_t.setMenu(MainMenu(self.settings))
+        self.h_separator = QWidget()
+        self.h_separator.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.h_toolbox_layout = QHBoxLayout()
+        self.h_toolbox_layout.setAlignment(Qt.AlignLeft)
+        self.h_toolbox_layout.addWidget(self.menu_button_t)
+        #self.h_toolbox_layout.addWidget(self.h_separator)
 
         # Interval buttons. BTW, QPushButton has setFlat(bool) option
         # Tomato:
@@ -55,11 +75,21 @@ class PlannerWidget(QWidget):
         self.time_button_box.addWidget(self.tomato_button)
         self.time_button_box.addWidget(self.short_break_button)
         self.time_button_box.addWidget(self.long_break_button)
+        # Experimental menu button
+        self.vbox.addLayout(self.h_toolbox_layout)
+        if (self.useComboTimes): # If you would like to choose intervals from combo box
+            # Combo box with time intervals:
+            self.time_combo = QComboBox(self)
+            self.time_combo.addItem('Tomato')
+            self.time_combo.addItem('Short break')
+            self.time_combo.addItem('Long break')
+            self.vbox.addWidget(self.time_combo)
+        else: # Or, when you'd like to use classic buttons
+            self.vbox.addLayout(self.time_button_box)
 
         self.hbox.addWidget(self.currentTimeLabel)
         self.hbox.addWidget(self.seconds_label)
         self.hbox.setAlignment(Qt.AlignCenter)
-        self.vbox.addLayout(self.time_button_box)
         self.vbox.addLayout(self.hbox)
         self.vbox.addWidget(self.startStopButton)
 
@@ -73,19 +103,13 @@ class PlannerWidget(QWidget):
             self.startTomatoTimer()
         else:
             self.stopTimer()
-            self.message = TimeoutMessageBox()
+            self.message = TimeoutMessageBox() # Commented because this particular code is the reason of the error with threads.
             self.settings.Tomatoes = self.settings.Tomatoes + 1
             print("Tomatoes finished: " + str(self.settings.Tomatoes))
-            self.settings.PlannerWindow.statusBar().showMessage(str(self.settings.Tomatoes) + ' tomatoes today')
 
     def changeButtonState(self):
         print("[LOG] changeButtonState()")
         if (self.stopped == 1):
-            # Set correct minutes, since the timer works with seconds
-            self.time_remaining = self.time_remaining - 1
-            self.updateTimeLabel(self.time_remaining)
-            self.updateSecondsLabel(59)
-
             self.startTomatoTimer()
             self.startStopButton.setText('Stop')
             self.startStopButton.setToolTip("Stop timer")
@@ -101,14 +125,15 @@ class PlannerWidget(QWidget):
         if (self.stopped == 1):
              print('Started')
         self.stopped = 0
-        self.timer.start(60000) # Was 60000
-        self.seconds_timer.start(1000) # Was 1000
+        self.timer.start(60000)
+        self.seconds_timer.start(1000)
         print(str(self.time_remaining))
         self.updateTimeLabel(self.time_remaining)
         # Disable buttons while times is active:
         self.tomato_button.setDisabled(True)
         self.short_break_button.setDisabled(True)
         self.long_break_button.setDisabled(True)
+        #self.currentTimeLabel.setStyleSheet("QWidget { color: #307730; font-size: 72px;  }")
 
     def stopTimer(self):
         print("[LOG] stopTimer")
@@ -125,7 +150,6 @@ class PlannerWidget(QWidget):
         self.tomato_button.setEnabled(True)
         self.short_break_button.setEnabled(True)
         self.long_break_button.setEnabled(True)
-        self.setTomato()
 
     def updateTimeLabel(self, value):
         self.currentTimeLabel.setText(str(value))
@@ -162,6 +186,12 @@ class PlannerWidget(QWidget):
 
     def createTimeoutMessagebox(self):
         self.mbox_window = TimeoutMessageBox()
+
+    def showAboutWindow(self):
+        self.about_window = AboutWindow()
+
+    def showStatisticWindow(self):
+        self.statistic_window = StatisticWindow()
 
     def reduceSeconds(self):
         if (self.current_seconds > 0):
