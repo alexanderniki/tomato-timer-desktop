@@ -103,7 +103,7 @@ class PlannerWidget(QWidget):
              print('Started')
         self.stopped = 0
         self.timer.start(60000) # Was 60000
-        self.seconds_timer.start(1000) # Was 1000
+        self.seconds_timer.start(500) # Was 1000
         print(str(self.time_remaining))
         self.updateTimeLabel(self.time_remaining)
         # Disable buttons while times is active:
