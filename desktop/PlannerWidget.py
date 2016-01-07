@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QLabel, QPushButton
 from PyQt5.QtCore import Qt, QTimer
 
 from TimeoutMessageBox import TimeoutMessageBox
+from SettingsWindow import SettingsWindow
 
 
 class PlannerWidget(QWidget):
@@ -11,8 +12,10 @@ class PlannerWidget(QWidget):
 
         self.settings = app_settings
         self.settings.PlannerWidget = self
+        self.settings.window_list["PlannerWidget"] = self
         if (self.settings.DEBUG == 1):
             print(self.settings.PlannerWidget)
+            print(self.settings.window_list["PlannerWidget"])
 
         # Timer itself
         self.stopped = 1
@@ -51,6 +54,12 @@ class PlannerWidget(QWidget):
         self.startStopButton = QPushButton("Start")
         self.startStopButton.setToolTip("Start timer")
         self.startStopButton.clicked.connect(self.changeButtonState)
+        
+        # Settings button
+        self.settings_button = QPushButton("Settings")
+        self.settings_button.setToolTip("Settings")
+        self.settings_button.setFlat(True)
+        self.settings_button.clicked.connect(self.show_settings)
 
         # Layouts:
         self.time_button_box = QHBoxLayout()
@@ -67,6 +76,7 @@ class PlannerWidget(QWidget):
         self.vbox.addLayout(self.time_button_box)
         self.vbox.addLayout(self.hbox)
         self.vbox.addWidget(self.startStopButton)
+        self.vbox.addWidget(self.settings_button)
 
         self.setLayout(self.vbox)
         self.show()
@@ -186,3 +196,7 @@ class PlannerWidget(QWidget):
         else:
             self.progress_indicator.setText(" : ")
             self.dot_visible = 1
+
+    def show_settings(self):
+        print("show_settings()")
+        self.settings_window = SettingsWindow(self.settings)

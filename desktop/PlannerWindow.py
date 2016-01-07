@@ -1,16 +1,16 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QAction
 from PyQt5.QtWidgets import QMessageBox
 
 import os, sys
 
 from PlannerWidget import PlannerWidget
 
+
 class PlannerWindow(QMainWindow):
     def __init__(self, app_settings):
         super().__init__()
 
-        print(os.getcwd())
         app_path = os.path.abspath(os.path.dirname(sys.argv[0]))
         print("App path is: " + app_path)
 
@@ -24,7 +24,6 @@ class PlannerWindow(QMainWindow):
         self.statusBar().showMessage(str(self.settings.Tomatoes) + ' tomatoes today') # Show status bar message
 
         self.plannerWidget = PlannerWidget(self.settings)
-
         self.setCentralWidget(self.plannerWidget)
         self.setFixedSize(240, 320) # Disable "Maximize" button
 

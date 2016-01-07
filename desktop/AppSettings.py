@@ -19,13 +19,20 @@ class AppSettings:
     TrayIcon = None
     AboutWindow = None
     PlannerWindow = None
+    PlannerWidget = None
     SettingsWindow = None
     StatisticWindow = None
     SysTrayMenu = None
     MainMenu = None
+    SettingsWindow = None
+    SettingsWidget = None
+    IntervalSettingSlider = None
+    
+    #  Window list (dictionary)
+    window_list = {}
     
     current_dir = os.path.dirname(os.path.realpath(__file__))
-    config_file = current_dir + "./grapetomato.conf"
+    config_file = current_dir + "/grapetomato.conf"
 
     # Debugging flag
     DEBUG = 1
@@ -34,9 +41,9 @@ class AppSettings:
         self.initialize()
         
     def initialize(self):
-        '''
-        Read settings from a file like grapetomato.config
-        '''
+        """
+        Read settings from a file like grapetomato.conf
+        """
         self.read_settings()
 
     def getTomato(self):
@@ -51,20 +58,27 @@ class AppSettings:
     def setTomato(self, tomato):
         self.Tomato = tomato
     
-    def setSBrake(self, sbreak):
+    def setSBreak(self, sbreak):
         self.SBreak = sbreak
         
     def setLBreak(self, lbreak):
         self.LBreak = lbreak
         
-    def update_settings(self, setting, value):
-        pass
+    def update_settings(self):
+        # generate new config file
+        config_parser = configparser.ConfigParser()
+        config_file = open(self.config_file, 'w')
+        config_parser.add_section('Intervals')
+        config_parser.set('Intervals', 'tomato', str(self.Tomato))
+        config_parser.set('Intervals', 'large_break', str(self.LBreak))
+        config_parser.set('Intervals', 'small_break', str(self.SBreak))
+        config_parser.write(config_file)
         
     def read_settings(self):
         #  read intervals
-        self.config_parser = configparser.ConfigParser()
-        self.config_parser.read(self.config_file)
-        self.intervals_section = self.config_parser['Intervals']
-        self.Tomato = int(self.intervals_section['tomato'])
-        self.SBreak = int(self.intervals_section['small_break'])
-        self.LBreak = int(self.intervals_section['large_break'])
+        config_parser = configparser.ConfigParser()
+        config_parser.read(self.config_file)
+        intervals_section = config_parser['Intervals']
+        self.Tomato = int(intervals_section['tomato'])
+        self.SBreak = int(intervals_section['small_break'])
+        self.LBreak = int(intervals_section['large_break'])
