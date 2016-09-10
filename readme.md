@@ -1,1 +1,1 @@
-# Tomato planner/timer application
+Tomato planner/timer application
