@@ -1,0 +1,11 @@
+{
+    "configuration": {
+        "intervals": {
+            "tomato": 45,
+            "short_break": 5,
+            "long_break": 15
+        },
+        "debug": true,
+        "locale": "EN"
+    }
+}

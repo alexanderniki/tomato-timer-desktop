@@ -1,0 +1,26 @@
+{
+"strings": {
+    "EN": {
+        "app_title": "Grape tomato",
+        "app_subtitle": "Pomodoro technique timer",
+        "tomato": "Tomato",
+        "short_break": "Short break",
+        "long_break": "Long break",
+        "msg_statusbar_default": "Ready",
+        "btn_start": "Start",
+        "btn_stop": "Stop",
+        "btn_settings": "Settings"
+    },
+    "RU": {
+        "app_title": "Grape tomato",
+        "app_subtitle": "Pomodoro таймер",
+        "tomato": "Основной интервал",
+        "short_break": "Перерыв",
+        "long_break": "Большой перерыв",
+        "msg_statusbar_default": "Готово",
+        "btn_start": "Старт",
+        "btn_stop": "Стоп",
+        "btn_settings": "Настройки"
+    }
+}
+}

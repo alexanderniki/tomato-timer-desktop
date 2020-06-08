@@ -1,0 +1,39 @@
+# IDE files
+####################
+
+# IDEA configs
+*.iml
+/idea/
+.idea/
+
+# Eclipse configs
+.project
+.classpath
+.settings/
+
+# Others
+local.properties
+*.tmp
+tmp/
+
+
+# OS-generated files
+####################
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+
+# Logs
+####################
+*.log
+
+
+# Python
+####################
+__pycache__/
+*.py[cod]
+*$py.class
+

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 512 512"
+   height="512"
+   width="512">
+  <defs
+     id="defs2" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(0,-161.53331)"
+     id="layer1">
+    <rect
+       rx="256"
+       y="161.53331"
+       x="0"
+       height="512"
+       width="512"
+       id="background"
+       style="opacity:1;fill:#212121;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;image-rendering:auto">
+      <title
+         id="title1218">Background</title>
+    </rect>
+    <g
+       id="lines">
+      <title
+         id="title1216">Lines</title>
+      <rect
+         style="opacity:1;fill:#fafafa;fill-opacity:1;stroke:none;stroke-width:1.22797358;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect1090"
+         width="24"
+         height="256"
+         x="186.75017"
+         y="289.53336" />
+      <rect
+         style="opacity:1;fill:#fafafa;fill-opacity:1;stroke:none;stroke-width:1.0634563;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect1090-3-6"
+         width="24"
+         height="192"
+         x="248.17131"
+         y="353.53333" />
+      <rect
+         style="opacity:1;fill:#fafafa;fill-opacity:1;stroke:none;stroke-width:1.0634563;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect1090-3-6-3"
+         width="24"
+         height="192"
+         x="311.49646"
+         y="353.53333" />
+      <rect
+         style="opacity:1;fill:#fafafa;fill-opacity:1;stroke:none;stroke-width:1.0634563;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect1090-3-6-3-5"
+         width="24"
+         height="192"
+         x="368"
+         y="353.53333" />
+      <rect
+         style="opacity:1;fill:#fafafa;fill-opacity:1;stroke:none;stroke-width:1.0634563;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect1090-3-6-3-5-6"
+         width="24"
+         height="192"
+         x="128"
+         y="353.53333" />
+    </g>
+  </g>
+</svg>
