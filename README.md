@@ -11,7 +11,7 @@ Simple tomato/pomodoro timer written in Python and GTK.
 
 0. Download the code
 0. Install dependencies
-0. Run main_window_gtk.py
+0. Run main.py
 
 Dependencies: pygobject
 

@@ -2,7 +2,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Pango
 
-from configuration import Configuration
+from app.configuration import Configuration, config
 
 
 class SettingsWindowBox(Gtk.Box):
@@ -10,9 +10,9 @@ class SettingsWindowBox(Gtk.Box):
     def __init__(self, config: Configuration):
 
         self.WIDGET_SPACING = 8
-        self.configuration = config
-        self.configuration.widgets['settings-window-box'] = self
-        print(self.configuration.widgets)
+        # self.configuration = config
+        config.widgets['settings-window-box'] = self
+        print(config.widgets)
         self.setup_ui()
 
     def setup_ui(self):
@@ -35,20 +35,20 @@ class SettingsWindowBox(Gtk.Box):
         self.pack_start(self.button_apply, False, True, 0)
 
     def create_tomato_setting(self):
-        self.label_tomato = Gtk.Label(self.configuration.messages['tomato'])
+        self.label_tomato = Gtk.Label(config.messages['tomato'])
         self.vbox_tomato = Gtk.Box(spacing=self.WIDGET_SPACING)
         self.hbox_tomato = Gtk.Box(spacing=self.WIDGET_SPACING)
         self.adjustment_tomato = Gtk.Adjustment(1, 1, 90, 1, 1, 0)
 
         self.slider_tomato = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=self.adjustment_tomato)
-        self.slider_tomato.set_value(self.configuration.tomato)
+        self.slider_tomato.set_value(config.tomato)
         self.slider_tomato.set_digits(0)  # Remove extra digits after decimal point while moving the slider.
         self.slider_tomato.connect("value-changed", self.on_tomato_slider_changed)
 
 
         self.spinbutton_tomato = Gtk.SpinButton()
         self.spinbutton_tomato.set_adjustment(self.adjustment_tomato)
-        self.spinbutton_tomato.set_value(self.configuration.tomato)
+        self.spinbutton_tomato.set_value(config.tomato)
         self.spinbutton_tomato.connect("value-changed", self.on_tomato_spinbutton_changed)
 
         self.hbox_tomato.pack_start(self.label_tomato, True, True, 0)
@@ -56,18 +56,18 @@ class SettingsWindowBox(Gtk.Box):
         self.hbox_tomato.pack_start(self.spinbutton_tomato, False, True, 0)
 
     def create_shortbreak_settings(self):
-        self.label_shortbreak = Gtk.Label(self.configuration.messages['short_break'])
+        self.label_shortbreak = Gtk.Label(config.messages['short-break'])
         self.hbox_shortbreak = Gtk.Box(spacing=self.WIDGET_SPACING)
         self.adjustment_shortbreak = Gtk.Adjustment(1, 1, 30, 1, 1, 0)
 
         self.slider_shortbreak = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=self.adjustment_shortbreak)
-        self.slider_shortbreak.set_value(self.configuration.short_break)
+        self.slider_shortbreak.set_value(config.short_break)
         self.slider_shortbreak.set_digits(0)  # Remove extra digits after decimal point while moving the slider.
         self.slider_shortbreak.connect("value-changed", self.on_shortbreak_slider_changed)
 
         self.spinbutton_shortbreak = Gtk.SpinButton()
         self.spinbutton_shortbreak.set_adjustment(self.adjustment_shortbreak)
-        self.spinbutton_shortbreak.set_value(self.configuration.short_break)
+        self.spinbutton_shortbreak.set_value(config.short_break)
         self.spinbutton_shortbreak.connect("value-changed", self.on_shortbreak_spinbutton_changed)
 
         self.hbox_shortbreak.pack_start(self.label_shortbreak, True, True, 0)
@@ -75,18 +75,18 @@ class SettingsWindowBox(Gtk.Box):
         self.hbox_shortbreak.pack_start(self.spinbutton_shortbreak, False, True, 0)
 
     def create_longbreak_settings(self):
-        self.label_longbreak = Gtk.Label(self.configuration.messages['long_break'])
+        self.label_longbreak = Gtk.Label(config.messages['long-break'])
         self.hbox_longbreak = Gtk.Box(spacing=self.WIDGET_SPACING)
         self.adjustment_longbreak = Gtk.Adjustment(1, 1, 45, 1, 1, 0)
 
         self.slider_longbreak = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=self.adjustment_longbreak)
-        self.slider_longbreak.set_value(self.configuration.short_break)
+        self.slider_longbreak.set_value(config.short_break)
         self.slider_longbreak.set_digits(0)  # Remove extra digits after decimal point while moving the slider.
         self.slider_longbreak.connect("value-changed", self.on_longbreak_slider_changed)
 
         self.spinbutton_longbreak = Gtk.SpinButton()
         self.spinbutton_longbreak.set_adjustment(self.adjustment_longbreak)
-        self.spinbutton_longbreak.set_value(self.configuration.long_break)
+        self.spinbutton_longbreak.set_value(config.long_break)
         self.spinbutton_longbreak.connect("value-changed", self.on_longbreak_spinbutton_changed)
 
         self.hbox_longbreak.pack_start(self.label_longbreak, True, True, 0)
@@ -105,7 +105,7 @@ class SettingsWindowBox(Gtk.Box):
     def on_tomato_slider_changed(self, event, *args):
         # Save changes to JSON config:
         #self.configuration.update_interval('tomato', self.slider_tomato.get_value())
-        self.configuration.get_configuration()
+        config.get_configuration()
         # Update UI:
         #self.configuration.widgets['main-window-box'].set_interval(self.slider_tomato.get_value())
         #self.configuration.widgets['main-window-box'].update_label()
@@ -117,7 +117,7 @@ class SettingsWindowBox(Gtk.Box):
 
     def on_shortbreak_slider_changed(self, event, *args):
         #self.configuration.update_interval('short_break', self.slider_shortbreak.get_value())
-        self.configuration.get_configuration()
+        config.get_configuration()
         #self.configuration.widgets['main-window-box'].set_interval(self.slider_shortbreak.get_value())
         #self.configuration.widgets['main-window-box'].update_label()
 
@@ -141,42 +141,29 @@ class SettingsWindowBox(Gtk.Box):
 
     def on_apply_button_clicked(self, event, *args):
         print("on_apply_button_clicked(self, event, *args)")
-        if self.configuration.widgets['main-window-box'].timer_active:
+        if config.widgets['main-window-box'].timer_active:
             print("Timer is active")
-            self.configuration.update_interval('tomato', self.slider_tomato.get_value())
-            self.configuration.update_interval('short_break', self.slider_shortbreak.get_value())
-            self.configuration.update_interval('long_break', self.slider_longbreak.get_value())
-            self.configuration.get_configuration()
+            config.update_interval('tomato', self.slider_tomato.get_value())
+            config.update_interval('short_break', self.slider_shortbreak.get_value())
+            config.update_interval('long_break', self.slider_longbreak.get_value())
+            config.get_configuration()
         else:
             print("Timer inactive")
-            self.configuration.update_interval('tomato', self.slider_tomato.get_value())
-            self.configuration.update_interval('short_break', self.slider_shortbreak.get_value())
-            self.configuration.update_interval('long_break', self.slider_longbreak.get_value())
-            self.configuration.get_configuration()
-            if self.configuration.widgets['main-window-box'].current_interval_type == 'tomato':
-                self.configuration.set_tomato(self.slider_tomato.get_value())
-                self.configuration.widgets['main-window-box'].current_interval = self.slider_tomato.get_value()
-                self.configuration.widgets['main-window-box'].time_remaining = self.slider_tomato.get_value()*60
-                self.configuration.widgets['main-window-box'].update_label()
-            elif self.configuration.widgets['main-window-box'].current_interval_type == 'short-break':
-                self.configuration.widgets['main-window-box'].current_interval = self.slider_shortbreak.get_value()
-                self.configuration.widgets['main-window-box'].time_remaining = self.slider_shortbreak.get_value()*60
-                self.configuration.widgets['main-window-box'].update_label()
+            config.update_interval('tomato', self.slider_tomato.get_value())
+            config.update_interval('short_break', self.slider_shortbreak.get_value())
+            config.update_interval('long_break', self.slider_longbreak.get_value())
+            config.get_configuration()
+            if config.widgets['main-window-box'].current_interval_type == 'tomato':
+                config.set_tomato(self.slider_tomato.get_value())
+                config.widgets['main-window-box'].current_interval = self.slider_tomato.get_value()
+                config.widgets['main-window-box'].time_remaining = self.slider_tomato.get_value()*60
+                config.widgets['main-window-box'].update_label()
+            elif config.widgets['main-window-box'].current_interval_type == 'short-break':
+                config.widgets['main-window-box'].current_interval = self.slider_shortbreak.get_value()
+                config.widgets['main-window-box'].time_remaining = self.slider_shortbreak.get_value()*60
+                config.widgets['main-window-box'].update_label()
             else:
-                self.configuration.widgets['main-window-box'].current_interval = self.slider_longbreak.get_value()
-                self.configuration.widgets['main-window-box'].time_remaining = self.slider_longbreak.get_value() * 60
-                self.configuration.widgets['main-window-box'].update_label()
-        self.configuration.get_configuration()
-
-
-if __name__ == "__main__":
-
-    conf = Configuration()
-
-    win = Gtk.Window(title="app")
-    win.connect("destroy", Gtk.main_quit)
-    swb = SettingsWindowBox(conf)
-    win.add(swb)
-
-    win.show_all()
-    Gtk.main()
+                config.widgets['main-window-box'].current_interval = self.slider_longbreak.get_value()
+                config.widgets['main-window-box'].time_remaining = self.slider_longbreak.get_value() * 60
+                config.widgets['main-window-box'].update_label()
+        config.get_configuration()

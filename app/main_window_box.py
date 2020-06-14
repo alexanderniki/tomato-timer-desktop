@@ -1,21 +1,20 @@
 import datetime
 
-import gi
-gi.require_version("Gtk", "3.0")
+# import gi
+# gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GObject, Pango
 
-from configuration import Configuration
-from settings_window_box import SettingsWindowBox
+from app.configuration import config
+from app.settings_window_box import SettingsWindowBox
 
 
 class MainWindowBox(Gtk.Box):
 
-    def __init__(self, config: Configuration):
+    def __init__(self):
 
-        self.configuration: Configuration = config
-        self.configuration.widgets['main-window-box'] = self
+        config.widgets['main-window-box'] = self
 
-        self.current_interval: int = self.configuration.tomato  # By default show Tomato
+        self.current_interval: int = config.tomato
         self.time_remaining: int = self.current_interval * 60  # TODO: make it with a method - don't hardcode a value*60
         self.current_interval_type: str = 'tomato'
         self.timer_active: bool = False
@@ -37,27 +36,26 @@ class MainWindowBox(Gtk.Box):
         self.pack_start(self.frame, True, True, 0)
 
         self.hbox_buttons = Gtk.Box(spacing=8)
-        self.btn_startstop = Gtk.Button(self.configuration.messages['btn_start'])
+        self.btn_startstop = Gtk.Button(config.messages['btn-start'])
         self.btn_startstop.connect("clicked", self.on_button_pressed)
-        self.btn_settings = Gtk.Button(self.configuration.messages['btn_settings'])
+        self.btn_settings = Gtk.Button(config.messages['btn-settings'])
         self.btn_settings.connect("clicked", self.on_settings_pressed)
         self.hbox_buttons.pack_start(self.btn_startstop, True, True, 0)
         self.hbox_buttons.pack_start(self.btn_settings, True, True, 0)
         self.pack_start(self.hbox_buttons, True, True, 0)
 
-        self.radio_tomato = Gtk.RadioButton(self.configuration.messages['tomato'])
-        self.radio_tomato.connect("clicked", self.on_radio_changed, self.configuration.tomato, 'tomato')
+        self.radio_tomato = Gtk.RadioButton(config.messages['tomato'])
+        self.radio_tomato.connect("clicked", self.on_radio_changed, config.tomato, 'tomato')
         self.pack_start(self.radio_tomato, True, True, 0)
 
         self.radio_sbreak = Gtk.RadioButton.new_from_widget(self.radio_tomato)
-        self.radio_sbreak.set_label(self.configuration.messages['short_break'])
-        self.radio_sbreak.connect("clicked", self.on_radio_changed, self.configuration.short_break, 'short-break')
+        self.radio_sbreak.set_label(config.messages['short-break'])
+        self.radio_sbreak.connect("clicked", self.on_radio_changed, config.short_break, 'short-break')
         self.pack_start(self.radio_sbreak, True, True, 0)
 
         self.radio_lbreak = Gtk.RadioButton.new_from_widget(self.radio_tomato)
-        self.radio_lbreak.set_label(self.configuration.messages['long_break'])
-        # self.radio_lbreak.connect("clicked", self._update_interval, self.configuration.long_break)
-        self.radio_lbreak.connect("clicked", self.on_radio_changed, self.configuration.long_break, 'long-break')
+        self.radio_lbreak.set_label(config.messages['long-break'])
+        self.radio_lbreak.connect("clicked", self.on_radio_changed, config.long_break, 'long-break')
         self.pack_start(self.radio_lbreak, True, True, 0)
 
         #self.statusbar = Gtk.Statusbar()
@@ -81,7 +79,7 @@ class MainWindowBox(Gtk.Box):
         self.set_margin_top(value)
         self.set_margin_left(value)
         self.set_margin_right(value)
-        # self.set_margin_bottom(value)
+        self.set_margin_bottom(value)
 
     def set_interval(self, value):
         if not self.timer_active:
@@ -140,13 +138,13 @@ class MainWindowBox(Gtk.Box):
 
     def start_timer(self):
         self.timer_active = True
-        self.btn_startstop.set_label(self.configuration.messages['btn_stop'])
+        self.btn_startstop.set_label(config.messages['btn-stop'])
         self.block_ui()
         self.timer = GObject.timeout_add(1000, self.update_time)
 
     def stop_timer(self):
         self.timer_active = False
-        self.btn_startstop.set_label(self.configuration.messages['btn_start'])
+        self.btn_startstop.set_label(config.messages['btn-start'])
         GObject.source_remove(self.timer)
         self.set_interval(self.current_interval)
         self.update_label()
@@ -164,7 +162,7 @@ class MainWindowBox(Gtk.Box):
         """
         Switch between radio buttons
         """
-        print(self.configuration.tomato)
+        print(config.tomato)
         print(args)
         print(event)
         interval = args[0]
@@ -176,15 +174,15 @@ class MainWindowBox(Gtk.Box):
         self.update_label()
         #print(self.current_interval_type)
         if args[1] == 'tomato':
-            self.set_interval(self.configuration.tomato)
+            self.set_interval(config.tomato)
             self.current_interval_type = interval_type
             self.update_label()
         elif args[1] == 'short-break':
-            self.set_interval(self.configuration.short_break)
+            self.set_interval(config.short_break)
             self.current_interval_type = interval_type
             self.update_label()
         else:
-            self.set_interval(self.configuration.long_break)
+            self.set_interval(config.long_break)
             self.current_interval_type = interval_type
             self.update_label()
 
@@ -200,11 +198,11 @@ class MainWindowBox(Gtk.Box):
             self.stop_timer()
 
     def on_settings_pressed(self, event, *args):
-        swb = SettingsWindowBox(self.configuration)
+        swb = SettingsWindowBox(config)
         # TODO: make it with separate Gtk.Window class
         settings_window = Gtk.Window()
         settings_window.set_default_size(320, 240)
-        settings_window.set_title(self.configuration.messages['btn_settings'])
+        settings_window.set_title(config.messages['btn-settings'])
         settings_window.set_modal(True)
         settings_window.add(swb)
         settings_window.show_all()

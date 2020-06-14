@@ -9,8 +9,8 @@ import datetime
 class Configuration:
 
     # Constants
-    CONFIG_FILE: str = 'config.json'
-    LOC_FILE: str = 'strings.json'
+    CONFIG_FILE: str = 'app/config.json'
+    LOC_FILE: str = 'app/strings.json'
     LOCALE = 'EN'  # Default locale - English
     DEBUG: bool = True
 
@@ -115,10 +115,4 @@ class Configuration:
         b_file.close()
 
 
-
-if __name__ == '__main__':
-    conf = Configuration()
-    conf.get_messages(conf.LOCALE)
-    print(conf.messages)
-    print(conf.messages['tomato'])
-    print(conf.tomato)
+config = Configuration()
