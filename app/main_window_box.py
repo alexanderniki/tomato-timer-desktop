@@ -1,4 +1,5 @@
 import datetime
+from notifypy import Notify
 
 # import gi
 # gi.require_version("Gtk", "3.0")
@@ -128,7 +129,7 @@ class MainWindowBox(Gtk.Box):
             # Update interval and label after stopping the timer
             self.set_interval(self.current_interval)
             self.update_label()
-            self.show_notification_dialog()
+            #self.show_notification_dialog()
             return False
         else:
             self.timer_active = True
@@ -144,6 +145,7 @@ class MainWindowBox(Gtk.Box):
 
     def stop_timer(self):
         self.timer_active = False
+        self.send_notification()
         self.btn_startstop.set_label(config.messages['btn-start'])
         GObject.source_remove(self.timer)
         self.set_interval(self.current_interval)
@@ -151,10 +153,18 @@ class MainWindowBox(Gtk.Box):
         self.release_ui()
 
     def show_notification_dialog(self):
+        # Don't use it!
         dialog = Gtk.Dialog()
         dialog.set_title("A Gtk+ Dialog")
         dialog.set_modal(True)
         dialog.show_all()
+
+    def send_notification(self):
+        notification = Notify()
+        notification.title = "Grape tomato"
+        notification.message = "Time's up!"
+        notification.icon = ""
+        notification.send()
 
     # Callbacks
 

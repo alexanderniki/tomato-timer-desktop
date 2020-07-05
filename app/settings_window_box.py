@@ -16,15 +16,24 @@ class SettingsWindowBox(Gtk.Box):
         self.setup_ui()
 
     def setup_ui(self):
-
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=self.WIDGET_SPACING)
         self.modify_font(Pango.FontDescription("Sans"))
+
+        self.set_box_margin(8)
 
         self.create_tomato_setting()
         self.create_shortbreak_settings()
         self.create_longbreak_settings()
         self.create_apply_button()
         self.create_layouts()
+
+    # Setters:
+
+    def set_box_margin(self, value: int) -> None:
+        self.set_margin_top(value)
+        self.set_margin_left(value)
+        self.set_margin_right(value)
+        self.set_margin_bottom(value)
 
     # Methods:
 
