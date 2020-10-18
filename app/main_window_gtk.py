@@ -1,6 +1,7 @@
 import time
 import datetime
 
+import locale
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GObject
@@ -18,8 +19,13 @@ class MainWindow(Gtk.Window):
         Gtk.Window.__init__(self, title=config.messages['app-title'])
         self.mwb = MainWindowBox()
         self.add(self.mwb)
+        self.get_system_info()
 
         self.connect('destroy', Gtk.main_quit)
+
+    def get_system_info(self):
+        self.system_language = locale.getdefaultlocale()
+        print(self.system_language)
 
 
 if __name__ == "__main__":

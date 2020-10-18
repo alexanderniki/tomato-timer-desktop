@@ -1,5 +1,5 @@
 import datetime
-from notifypy import Notify
+from notifypy import notify
 
 # import gi
 # gi.require_version("Gtk", "3.0")
@@ -160,7 +160,7 @@ class MainWindowBox(Gtk.Box):
         dialog.show_all()
 
     def send_notification(self):
-        notification = Notify()
+        notification = notify()
         notification.title = "Grape tomato"
         notification.message = "Time's up!"
         notification.icon = ""
@@ -211,7 +211,7 @@ class MainWindowBox(Gtk.Box):
         swb = SettingsWindowBox(config)
         # TODO: make it with separate Gtk.Window class
         settings_window = Gtk.Window()
-        settings_window.set_default_size(320, 240)
+        settings_window.set_default_size(360, 240)
         settings_window.set_title(config.messages['btn-settings'])
         settings_window.set_modal(True)
         settings_window.add(swb)

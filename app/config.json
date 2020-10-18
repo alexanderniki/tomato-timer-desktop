@@ -2,9 +2,9 @@
     "configuration": {
         "debug": true,
         "intervals": {
-            "long_break": 15.0,
-            "short_break": 1.0,
-            "tomato": 45.0
+            "long_break": 15,
+            "short_break": 5,
+            "tomato": 45
         },
         "locale": "EN"
     }
