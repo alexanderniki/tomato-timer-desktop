@@ -33,20 +33,20 @@ class SettingsWindowBox(Gtk.Box):
         self.interval_tomato = IntervalSelector(self.adjustment_tomato)
         self.interval_tomato.text = config.messages['tomato']
         self.interval_tomato.value = config.tomato
-        self.interval_tomato.connect('changed', self.on_interval_event)
-        self.interval_tomato.adjustment.connect("value-changed", self.on_interval_event)
+        # self.interval_tomato.connect('changed', self.on_interval_event)
+        self.interval_tomato.adjustment.connect("value-changed", self.on_interval_event, "tomato")
 
         self.interval_short_break = IntervalSelector(self.adjustment_shortbreak)
         self.interval_short_break.text = config.messages['short-break']
         self.interval_short_break.value = config.short_break
-        self.interval_short_break.connect('changed', self.on_interval_event)
-        self.interval_short_break.adjustment.connect("value-changed", self.on_interval_event)
+        # self.interval_short_break.connect('changed', self.on_interval_event)
+        self.interval_short_break.adjustment.connect("value-changed", self.on_interval_event, "short_break")
 
         self.interval_long_break = IntervalSelector(self.adjustment_longbreak)
         self.interval_long_break.text = config.messages['long-break']
         self.interval_long_break.value = config.long_break
-        self.interval_long_break.connect('changed', self.on_interval_event)
-        self.interval_long_break.adjustment.connect("value-changed", self.on_interval_event)
+        # self.interval_long_break.connect('changed', self.on_interval_event)
+        self.interval_long_break.adjustment.connect("value-changed", self.on_interval_event, "long_break")
 
         # END new intervals
 
@@ -124,7 +124,7 @@ class SettingsWindowBox(Gtk.Box):
         self.slider_adj.set_value(self.tom_spin.get_value())
 
     def on_apply_button_clicked(self, event, *args):
-        print("on_apply_button_clicked(self, event, *args)")
+        print("on_apply_button_clicked(self, event, *args)" + str(event))
         if config.widgets['main-window-box'].timer_active:
             print("Timer is active")
             config.update_interval('tomato', self.interval_tomato.value)
@@ -150,7 +150,23 @@ class SettingsWindowBox(Gtk.Box):
                 config.widgets['main-window-box'].current_interval = self.slider_longbreak.get_value()
                 config.widgets['main-window-box'].time_remaining = self.slider_longbreak.get_value() * 60
                 config.widgets['main-window-box'].update_label()"""
-        config.get_configuration()
+            current_interval = config.widgets["main-window-box"].current_interval_type
+            print("Current interval" + current_interval)
+            if current_interval == 'tomato':
+                config.widgets["main-window-box"].set_interval(config.tomato)
+                config.widgets["main-window-box"].update_label()
+            elif current_interval == 'short-break':
+                config.widgets["main-window-box"].set_interval(config.short_break)
+                config.widgets["main-window-box"].update_label()
+            else:
+                config.widgets["main-window-box"].set_interval(config.long_break)
+                config.widgets["main-window-box"].update_label()
 
     def on_interval_event(self, event, *args):
-        print(self.interval_tomato.value)
+        if args[0] == "tomato":
+            print("Interval changed. Type: " + args[0] + ". Value: " + str(self.interval_tomato.value))
+        elif args[0] == "short_break":
+            print("Interval changed. Type: " + args[0] + ". Value: " + str(self.interval_short_break.value))
+        else:
+            print("Interval changed. Type: " + args[0] + ". Value: " + str(self.interval_long_break.value))
+        pass

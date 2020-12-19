@@ -1,5 +1,6 @@
 import datetime
-from notifypy import notify
+import logging
+from notifypy import Notify  # pip install notify-py
 
 # import gi
 # gi.require_version("Gtk", "3.0")
@@ -72,6 +73,7 @@ class MainWindowBox(Gtk.Box):
     def _update_interval(self, event, *args):  # DEPRECATED
         self.current_interval = args[0]
         self.time_remaining = self.current_interval * 60
+        print("update_label")
         self.update_label()
 
     # Setters:
@@ -100,6 +102,9 @@ class MainWindowBox(Gtk.Box):
     # Actions:
 
     def update_label(self):
+        print("update_label")
+        print("Time remaining: " + str(self.time_remaining))
+        print("_interval: " + str(self._interval(self.time_remaining)))
         self.label_time_remaining.set_text(str(self._interval(self.time_remaining)))
 
     def block_ui(self):
@@ -138,12 +143,14 @@ class MainWindowBox(Gtk.Box):
         return True
 
     def start_timer(self):
+        print("Start timer")
         self.timer_active = True
         self.btn_startstop.set_label(config.messages['btn-stop'])
         self.block_ui()
         self.timer = GObject.timeout_add(1000, self.update_time)
 
     def stop_timer(self):
+        print("Stop timer")
         self.timer_active = False
         self.send_notification()
         self.btn_startstop.set_label(config.messages['btn-start'])
@@ -160,7 +167,7 @@ class MainWindowBox(Gtk.Box):
         dialog.show_all()
 
     def send_notification(self):
-        notification = notify()
+        notification = Notify()
         notification.title = "Grape tomato"
         notification.message = "Time's up!"
         notification.icon = ""
@@ -172,6 +179,7 @@ class MainWindowBox(Gtk.Box):
         """
         Switch between radio buttons
         """
+        print("Callback: " + self.on_radio_changed.__name__)
         print(config.tomato)
         print(args)
         print(event)
@@ -196,8 +204,6 @@ class MainWindowBox(Gtk.Box):
             self.current_interval_type = interval_type
             self.update_label()
 
-
-
     def on_button_pressed(self, event, *args):
         """
         Start and stop timer
@@ -206,6 +212,10 @@ class MainWindowBox(Gtk.Box):
             self.start_timer()
         else:
             self.stop_timer()
+
+    def on_interval_settings_changed(self):
+        print("on_interval_settings_changed")
+        pass
 
     def on_settings_pressed(self, event, *args):
         swb = SettingsWindowBox(config)

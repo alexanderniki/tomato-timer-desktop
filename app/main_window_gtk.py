@@ -1,5 +1,6 @@
 import time
 import datetime
+import logging
 
 import locale
 import gi
@@ -13,6 +14,10 @@ from configuration import Configuration, config
 class MainWindow(Gtk.Window):
 
     def __init__(self):
+
+        logger = logging.getLogger()
+        logging.basicConfig(level="DEBUG")
+        logger.info("Starting the app")
 
         config.windows['main_window'] = self
 

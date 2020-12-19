@@ -41,13 +41,13 @@ class IntervalSelector(Gtk.Box):
         self.slider = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=self.adjustment)
         self.slider.set_value(self._value)
         self.slider.set_digits(0)  # Remove extra digits after decimal point while moving the slider.
-        #self.slider.connect("value-changed", self.on_slider_changed)
+        self.slider.connect("value-changed", self.on_slider_changed)
 
     def create_spin_button(self):
         self.spin_button = Gtk.SpinButton()
         self.spin_button.set_adjustment(self.adjustment)
         self.spin_button.set_value(self._value)
-        #self.spin_button.connect("value-changed", self.on_spinbutton_changed)
+        self.spin_button.connect("value-changed", self.on_spinbutton_changed)
 
     def pack_ui(self):
         self.hbox.pack_start(self.slider, True, True, 0)
@@ -98,11 +98,11 @@ class IntervalSelector(Gtk.Box):
     # Callbacks:
 
     def on_slider_changed(self, event):
-        self._value = int(self.adjustment.get_value())
+        # self._value = int(self.adjustment.get_value())
         self.emit("changed")
 
     def on_spinbutton_changed(self, event):
-        self._value = int(self.adjustment.get_value())
+        # self._value = int(self.adjustment.get_value())
         self.emit("changed")
 
     def on_adjustment_changed(self, event):
@@ -113,4 +113,5 @@ class IntervalSelector(Gtk.Box):
 
     @GObject.Signal
     def changed(self):
+        print("changed emitted")
         pass
