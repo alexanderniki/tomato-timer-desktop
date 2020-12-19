@@ -2,7 +2,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Pango, GObject
 
-from app.configuration import Configuration, config
+from app.Logger import log
 
 
 class IntervalSelector(Gtk.Box):
@@ -114,4 +114,5 @@ class IntervalSelector(Gtk.Box):
     @GObject.Signal
     def changed(self):
         print("changed emitted")
+        log.debug("signal", "changed", "emitted")
         pass

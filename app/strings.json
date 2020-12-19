@@ -9,7 +9,9 @@
         "msg_statusbar_default": "Ready",
         "btn-start": "Start",
         "btn-stop": "Stop",
-        "btn-settings": "Settings"
+        "btn-settings": "Settings",
+        "notification-interval-done": "Time's up!",
+        "settings-apply": "Apply"
     },
     "RU": {
         "app-title": "Grape tomato",
@@ -20,7 +22,9 @@
         "msg_statusbar_default": "Готово",
         "btn-start": "Старт",
         "btn-stop": "Стоп",
-        "btn-settings": "Настройки"
+        "btn-settings": "Настройки",
+        "notification-interval-done": "Интервал завершен",
+        "settings-apply": "Применить"
     }
 }
 }

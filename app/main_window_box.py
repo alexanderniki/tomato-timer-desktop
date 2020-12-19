@@ -8,6 +8,7 @@ from gi.repository import Gtk, GObject, Pango
 
 from app.configuration import config
 from app.settings_window_box import SettingsWindowBox
+from app.Logger import Logger, log
 
 
 class MainWindowBox(Gtk.Box):
@@ -179,7 +180,7 @@ class MainWindowBox(Gtk.Box):
         """
         Switch between radio buttons
         """
-        print("Callback: " + self.on_radio_changed.__name__)
+        log.debug("Callback: " + self.on_radio_changed.__name__)
         print(config.tomato)
         print(args)
         print(event)
@@ -218,7 +219,7 @@ class MainWindowBox(Gtk.Box):
         pass
 
     def on_settings_pressed(self, event, *args):
-        swb = SettingsWindowBox(config)
+        swb = SettingsWindowBox()
         # TODO: make it with separate Gtk.Window class
         settings_window = Gtk.Window()
         settings_window.set_default_size(360, 240)

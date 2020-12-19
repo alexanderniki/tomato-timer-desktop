@@ -4,6 +4,8 @@ App configuration
 
 import json
 import datetime
+import logging
+from Logger import log
 
 
 class Configuration:
@@ -108,10 +110,8 @@ class Configuration:
         json_config['configuration']['intervals'][interval] = value
 
         b_file = open(self.CONFIG_FILE, 'w', encoding="utf8")
-        if self.DEBUG == True:
-            print(json_config)
+        log.debug(json_config)
         b_file.write(json.dumps(json_config, indent=4, sort_keys=True, ensure_ascii=False))
-        #json.dump(json_config, b_file)
         b_file.close()
 
 

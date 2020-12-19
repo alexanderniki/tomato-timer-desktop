@@ -8,7 +8,7 @@ from app.interval_selector import IntervalSelector
 
 class SettingsWindowBox(Gtk.Box):
 
-    def __init__(self, config: Configuration):
+    def __init__(self):
 
         self.WIDGET_SPACING = 8
         # self.configuration = config
@@ -78,7 +78,7 @@ class SettingsWindowBox(Gtk.Box):
         self.pack_start(self.button_apply, False, True, 0)
 
     def create_apply_button(self):
-        self.button_apply = Gtk.Button("Apply")
+        self.button_apply = Gtk.Button(config.messages['settings-apply'])
         self.button_apply.connect("clicked", self.on_apply_button_clicked)
 
     def update_configuration(self):
@@ -137,19 +137,6 @@ class SettingsWindowBox(Gtk.Box):
             config.update_interval('short_break', self.interval_short_break.value)
             config.update_interval('long_break', self.interval_long_break.value)
             config.get_configuration()
-            """if config.widgets['main-window-box'].current_interval_type == 'tomato':
-                config.set_tomato(self.slider_tomato.get_value())
-                config.widgets['main-window-box'].current_interval = self.slider_tomato.get_value()
-                config.widgets['main-window-box'].time_remaining = self.slider_tomato.get_value()*60
-                config.widgets['main-window-box'].update_label()
-            elif config.widgets['main-window-box'].current_interval_type == 'short-break':
-                config.widgets['main-window-box'].current_interval = self.slider_shortbreak.get_value()
-                config.widgets['main-window-box'].time_remaining = self.slider_shortbreak.get_value()*60
-                config.widgets['main-window-box'].update_label()
-            else:
-                config.widgets['main-window-box'].current_interval = self.slider_longbreak.get_value()
-                config.widgets['main-window-box'].time_remaining = self.slider_longbreak.get_value() * 60
-                config.widgets['main-window-box'].update_label()"""
             current_interval = config.widgets["main-window-box"].current_interval_type
             print("Current interval" + current_interval)
             if current_interval == 'tomato':
