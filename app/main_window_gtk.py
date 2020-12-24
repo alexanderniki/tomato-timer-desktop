@@ -7,8 +7,8 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GObject
 
-from main_window_box import MainWindowBox
-from configuration import Configuration, config
+from app.main_window_box import MainWindowBox
+from app.configuration import Configuration, config
 
 
 class MainWindow(Gtk.Window):

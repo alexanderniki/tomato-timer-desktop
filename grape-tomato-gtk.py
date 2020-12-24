@@ -6,7 +6,7 @@ from app.main_window_gtk import MainWindow
 from app.configuration import Configuration, config
 
 
-configuration = Configuration()
+# configuration = Configuration()
 
 window = MainWindow()
 window.connect("destroy", Gtk.main_quit)

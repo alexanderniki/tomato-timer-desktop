@@ -2,8 +2,9 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Pango
 
-from app.configuration import Configuration, config
+from app.configuration import config
 from app.interval_selector import IntervalSelector
+from app.logger import log
 
 
 class SettingsWindowBox(Gtk.Box):
@@ -13,7 +14,7 @@ class SettingsWindowBox(Gtk.Box):
         self.WIDGET_SPACING = 8
         # self.configuration = config
         config.widgets['settings-window-box'] = self
-        print(config.widgets)
+        log.debug(config.widgets)
         self.setup_ui()
 
     def setup_ui(self):

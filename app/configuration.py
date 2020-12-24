@@ -5,7 +5,7 @@ App configuration
 import json
 import datetime
 import logging
-from Logger import log
+from app.logger import log
 
 
 class Configuration:

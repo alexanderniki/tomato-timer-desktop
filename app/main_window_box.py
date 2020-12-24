@@ -8,14 +8,14 @@ from gi.repository import Gtk, GObject, Pango
 
 from app.configuration import config
 from app.settings_window_box import SettingsWindowBox
-from app.Logger import Logger, log
+from app.logger import log
 
 
 class MainWindowBox(Gtk.Box):
 
     def __init__(self):
 
-        config.widgets['main-window-box'] = self
+        config.widgets['main-window-box'] = self  # Register self in configuration
 
         self.current_interval: int = config.tomato
         self.time_remaining: int = self.current_interval * 60  # TODO: make it with a method - don't hardcode a value*60
@@ -103,9 +103,9 @@ class MainWindowBox(Gtk.Box):
     # Actions:
 
     def update_label(self):
-        print("update_label")
-        print("Time remaining: " + str(self.time_remaining))
-        print("_interval: " + str(self._interval(self.time_remaining)))
+        log.debug("update_label")
+        log.debug("Time remaining: " + str(self.time_remaining))
+        log.debug("_interval: " + str(self._interval(self.time_remaining)))
         self.label_time_remaining.set_text(str(self._interval(self.time_remaining)))
 
     def block_ui(self):
@@ -135,6 +135,7 @@ class MainWindowBox(Gtk.Box):
             # Update interval and label after stopping the timer
             self.set_interval(self.current_interval)
             self.update_label()
+            self.send_notification()
             #self.show_notification_dialog()
             return False
         else:
@@ -144,7 +145,7 @@ class MainWindowBox(Gtk.Box):
         return True
 
     def start_timer(self):
-        print("Start timer")
+        log.debug("start_timer()")
         self.timer_active = True
         self.btn_startstop.set_label(config.messages['btn-stop'])
         self.block_ui()
@@ -153,7 +154,7 @@ class MainWindowBox(Gtk.Box):
     def stop_timer(self):
         print("Stop timer")
         self.timer_active = False
-        self.send_notification()
+        #self.send_notification()
         self.btn_startstop.set_label(config.messages['btn-start'])
         GObject.source_remove(self.timer)
         self.set_interval(self.current_interval)
@@ -169,8 +170,8 @@ class MainWindowBox(Gtk.Box):
 
     def send_notification(self):
         notification = Notify()
-        notification.title = "Grape tomato"
-        notification.message = "Time's up!"
+        notification.title = config.messages["app-title"]
+        notification.message = config.messages["notification-interval-done"]
         notification.icon = ""
         notification.send()
 
